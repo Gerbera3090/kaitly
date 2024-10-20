@@ -9,4 +9,8 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+  @Get('api-url')
+  getApiUrl(): string {
+    return this.appService.getApiUrl(); // 환경 변수를 반환하는 서비스 호출
+  }
 }

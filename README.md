@@ -24,3 +24,18 @@ docker-compose -f docker-compose.mysql.yml up -d
 
 배포 환경 데이터베이스 (mysql) 컨테이너를 실행합니다.
 배포 환경에서는 데이터베이스를 많이 실행할 일이 없으므로 따로 사용합니다.
+
+# 설정 관련
+
+### 만약 docker 설정을 변경했거나 패키지를 설치했을 땐
+
+```
+docker-compose down
+```
+
+을 하고 위 명령어를 실행한다.
+(주의) DB 볼륨이 같이 날아가니 db에 정보 있을 땐 하지 말자.
+
+### 평소
+
+CTRL+C 한다.

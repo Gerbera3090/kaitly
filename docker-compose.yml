@@ -1,29 +1,41 @@
-version: "3"
+version: "3.8"
 services:
   backend:
     build:
       context: ./packages/backend
-      args:
-        NODE_ENV: development # 개발 환경일 경우 development, 배포 환경일 경우 production
     environment:
-      NODE_ENV: development # 개발 환경일 경우 development, 배포 환경일 경우 production
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_DATABASE: ${DB_DATABASE}
+    volumes:
+      - .:/app # 루트 디렉토리를 마운트하여 hot reloading 적용
+      - /app/node_modules # node_modules는 마운트하지 않음
+    working_dir: /app/packages/backend
     ports:
-      - "21572:21572"
+      - "21572:3000" # 외부에서 21572 포트로 접근, 내부는 3000 포트로 동작
+    networks:
+      - kaitly_network
     env_file: .env
+    command: pnpm run start:dev # dev 모드 실행
 
   frontend:
     build:
       context: ./packages/frontend
-      args:
-        NODE_ENV: development # 개발 환경일 경우 development, 배포 환경일 경우 production
     environment:
-      NODE_ENV: development # 개발 환경일 경우 development, 배포 환경일 경우 production
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    volumes:
+      - .:/app # 루트 디렉토리를 마운트하여 hot reloading 적용
+      - /app/node_modules # node_modules는 마운트하지 않음
+    working_dir: /app/packages/frontend
     ports:
-      - "20064:20064"
+      - "20064:3000" # 외부에서 20064 포트로 접근, 내부는 3000 포트로 동작 (Next.js 기본 포트)
+    networks:
+      - kaitly_network
     env_file: .env
+    command: pnpm run dev # next.js dev 모드 실행
+
+networks:
+  kaitly_network:
+    driver: bridge

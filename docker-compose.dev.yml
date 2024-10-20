@@ -1,8 +1,17 @@
-version: "3"
+version: "3.8"
 services:
+  backend:
+    environment:
+      NODE_ENV: development # 개발 환경일 경우 development
+    networks:
+      - kaitly_network
+
+  frontend:
+    environment:
+      NODE_ENV: development # 개발 환경일 경우 development
+
   mysql:
     image: mysql:8.0
-    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -10,36 +19,8 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-
-  backend:
-    build:
-      context: ./packages/backend
-      args:
-        NODE_ENV: development
-    environment:
-      NODE_ENV: development
-      DB_HOST: mysql # 개발 환경에서는 MySQL 컨테이너를 사용하므로 이름으로 참조
-      DB_PORT: ${DB_PORT}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_DATABASE: ${DB_DATABASE}
-    ports:
-      - "21572:21572"
-    depends_on:
-      - mysql # MySQL이 실행된 후에 backend 실행
-    env_file: .env
-
-  frontend:
-    build:
-      context: ./packages/frontend
-      args:
-        NODE_ENV: development
-    environment:
-      NODE_ENV: development
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
-    ports:
-      - "20064:20064"
-    env_file: .env
+    networks:
+      - kaitly_network
 
 volumes:
   mysql_data:
