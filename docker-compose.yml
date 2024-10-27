@@ -14,7 +14,7 @@ services:
       - /app/node_modules # node_modules는 마운트하지 않음
     working_dir: /app/packages/backend
     ports:
-      - "21572:3000" # 외부에서 21572 포트로 접근, 내부는 3000 포트로 동작
+      - "8000:3000" # 외부에서 21572 포트로 접근, 내부는 3000 포트로 동작
     networks:
       - kaitly_network
     env_file: .env
@@ -30,7 +30,7 @@ services:
       - /app/node_modules # node_modules는 마운트하지 않음
     working_dir: /app/packages/frontend
     ports:
-      - "20064:3000" # 외부에서 20064 포트로 접근, 내부는 3000 포트로 동작 (Next.js 기본 포트)
+      - "3000:3000" # 외부에서 20064 포트로 접근, 내부는 3000 포트로 동작 (Next.js 기본 포트)
     networks:
       - kaitly_network
     env_file: .env

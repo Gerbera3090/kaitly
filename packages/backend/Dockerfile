@@ -14,5 +14,5 @@ WORKDIR /app/packages/backend
 # 포트 21572 노출
 EXPOSE 21572
 
-# dev 모드로 실행
-CMD ["pnpm", "run", "start:dev"]
+# 기본적으로 production 모드로 실행, 환경 변수에 따라 dev 모드로 실행
+CMD ["sh", "-c", "if [ \"$NODE_ENV\" = 'development' ]; then pnpm run start:dev; else pnpm run build && pnpm run start; fi"]

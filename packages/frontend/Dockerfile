@@ -14,5 +14,5 @@ WORKDIR /app/packages/frontend
 # 포트 20064 노출
 EXPOSE 20064
 
-# dev 모드로 실행
-CMD ["pnpm", "run", "dev"]
+# 기본적으로 production 모드로 실행, 환경 변수에 따라 dev 모드로 실행
+CMD ["sh", "-c", "if [ \"$NODE_ENV\" = 'development' ]; then pnpm run dev; else pnpm run build && pnpm run start; fi"]
